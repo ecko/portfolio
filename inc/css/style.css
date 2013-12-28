@@ -1,0 +1,115 @@
+/*
+	colour scheme:
+	green top: c9ff05
+	blue top: 03c7ff
+	darker blue: 0088cc
+*/
+
+body {
+	background:#f1f2f2;
+}
+
+#main, main {
+	display:block;
+	padding-top:50px;
+}
+
+header {
+	position:fixed;
+	width:100%;
+	border-top:6px solid #c9ff05;
+	border-top:6px solid #03c7ff;
+	border-bottom:1px solid #cfd0d1;
+	
+	background:#eeeeee;
+	background:#fff;
+	z-index:2;
+	
+	/*
+	-webkit-box-shadow:0px 0px 5px rgba(0, 0, 0, 0.5);
+	box-shadow:0px 0px 5px rgba(0, 0, 0, 0.5);
+	*/
+	
+}
+
+header nav {
+	padding:10px 0;
+}
+nav ul {
+	padding-left:380px;
+}
+nav ul li {
+	margin:0;
+	float:left;
+	padding-right: 80px;
+	list-style-type: none;
+	letter-spacing: 1px;
+	overflow: hidden;
+}
+nav ul li:last-child {
+	padding: 0;
+}
+nav a {
+	text-decoration:none;
+	color:#808080;
+	color:#666666;
+	
+}
+nav a:hover {
+	color:#0088cc;
+}
+nav h2 {
+	margin:0;
+	float:left;
+	font-size:1.25em;
+	line-height:1;
+	padding-top:3px;
+	color:#333;
+}
+
+ul .work {
+	
+}
+.work li {
+	margin:0;
+	list-style-type: none;
+	width:300px;
+	float:left;
+}
+#work .one-of-three {
+	background:#eee url(../../img/groovepaper.png) 0 0 repeat;
+	margin-top:3px;
+	margin-bottom:3px;
+}
+#work .one-of-three a {
+	display:block;
+	border:1px solid #d7d7d7;
+	padding:0px;
+	text-decoration:none;
+}
+#work .one-of-three a:hover {
+	border:1px solid #c9ff05;
+	border:1px solid #03c7ff;
+	
+}
+#work img {
+	width:100%;
+}
+#work .one-of-three a .details {
+	padding:5px;
+	color:#666666;
+}
+#work .details p {
+	font-size:15px;
+	margin-bottom:5px;
+}
+#work .details h3 {
+	text-transform:uppercase;
+}
+
+footer {
+	margin-top:25px;
+	background:#222222;
+	padding:45px 0;
+	color:#ececec;
+}
