@@ -1,104 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-	<meta charset="utf-8">
+<?php
 
-	<title>Portfolio</title>
-	
-	<!--
-	<meta name="author" content="**">
-	<meta name="keywords" content="**">
-	<meta name="description" content="**">
-	-->
+/**
+ * The directory in which your application specific resources are located.
+ * The application directory must contain the bootstrap.php file.
+ *
+ * @link http://kohanaframework.org/guide/about.install#application
+ */
+$application = '../../application';
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	
-	<link rel="stylesheet" href="inc/css/toast.css">
-	<link rel="stylesheet" href="inc/css/normalize.css">
-	<link rel="stylesheet" href="inc/css/style.css">
-	<script src="inc/js/jquery-1.10.2.min.js"></script>
+/**
+ * The directory in which your modules are located.
+ *
+ * @link http://kohanaframework.org/guide/about.install#modules
+ */
+//$modules = 'modules';
+$modules = '/srv/http/_htdocs/sandbox/resources/kohana-v3.3.1/modules';
 
+/**
+ * The directory in which the Kohana resources are located. The system
+ * directory must contain the classes/kohana.php file.
+ *
+ * @link http://kohanaframework.org/guide/about.install#system
+ */
+//$system = 'system';
+$system = '/srv/http/_htdocs/sandbox/resources/kohana-v3.3.1/system';
 
-</head>
-<body>
+/**
+ * The default extension of resource files. If you change this, all resources
+ * must be renamed to use the new extension.
+ *
+ * @link http://kohanaframework.org/guide/about.install#ext
+ */
+define('EXT', '.php');
 
-	<header id="header">
-		<nav>
-			<div class="container">
-				<div class="grid">
-					<div class="unit span-grid">
-						<h2>&raquo; Michael Simion </h2>
-						<ul id="links">
-							<li>
-								<a href="#">About</a>
-							</li>
-							<li><a href="#">Work</a></li>
-							<li>
-								<a href="#">Services</a>
-							</li>
-							<li>
-								<a href="#">Contact</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</nav>
-	</header>
-	
-	<div id="main">
-		<div class="container">
-			<div id="work" class="grid">
-				<h1>Work</h1>
-				
-				<div class="unit one-of-three">
-					<a href="#">
-						<img src="img/test1.jpg">
-						
-					</a>
-				</div>
-				<div class="unit one-of-three">
-					<a href="#">
-						<img src="img/test2.jpg">
-						
-						<div class="details">
-							<h3>Test Name</h3>
-							<p>list of of the technologies used...</p>
-							<p>Maybe have the date here?</p>
-						</div>
-					</a>
-				</div>
-				<div class="unit one-of-three">
-					<a href="#">3</a>
-				</div>
-				
-				<div class="unit one-of-three">
-					<a href="#">
-						<img src="img/no_preview.gif">
-						
-					</a>
-				</div>
-				<div class="unit one-of-three">
-					<a href="#">5</a>
-				</div>
-				<div class="unit one-of-three">
-					<a href="#">6</a>
-				</div>
-				
-			</div>
-		</div>
-	</div>
-	
-	
-	<footer>
-		<div class="container">
-			<div class="unit span-grid">
-				asdf
-			</div>
-		</div>
-	</footer>
+/**
+ * Set the PHP error reporting level. If you set this in php.ini, you remove this.
+ * @link http://www.php.net/manual/errorfunc.configuration#ini.error-reporting
+ *
+ * When developing your application, it is highly recommended to enable notices
+ * and strict warnings. Enable them by using: E_ALL | E_STRICT
+ *
+ * In a production environment, it is safe to ignore notices and strict warnings.
+ * Disable them by using: E_ALL ^ E_NOTICE
+ *
+ * When using a legacy application with PHP >= 5.3, it is recommended to disable
+ * deprecated notices. Disable with: E_ALL & ~E_DEPRECATED
+ */
+error_reporting(E_ALL | E_STRICT);
 
-</body>
-</html>
+/**
+ * End of standard configuration! Changing any of the code below should only be
+ * attempted by those with a working knowledge of Kohana internals.
+ *
+ * @link http://kohanaframework.org/guide/using.configuration
+ */
+
+// Set the full path to the docroot
+define('DOCROOT', realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR);
+
+// Make the application relative to the docroot, for symlink'd index.php
+if ( ! is_dir($application) AND is_dir(DOCROOT.$application))
+	$application = DOCROOT.$application;
+
+// Make the modules relative to the docroot, for symlink'd index.php
+if ( ! is_dir($modules) AND is_dir(DOCROOT.$modules))
+	$modules = DOCROOT.$modules;
+
+// Make the system relative to the docroot, for symlink'd index.php
+if ( ! is_dir($system) AND is_dir(DOCROOT.$system))
+	$system = DOCROOT.$system;
+
+// Define the absolute paths for configured directories
+define('APPPATH', realpath($application).DIRECTORY_SEPARATOR);
+define('MODPATH', realpath($modules).DIRECTORY_SEPARATOR);
+define('SYSPATH', realpath($system).DIRECTORY_SEPARATOR);
+
+// Clean up the configuration vars
+unset($application, $modules, $system);
+
+if (file_exists('install'.EXT))
+{
+	// Load the installation check
+	return include 'install'.EXT;
+}
+
+/**
+ * Define the start time of the application, used for profiling.
+ */
+if ( ! defined('KOHANA_START_TIME'))
+{
+	define('KOHANA_START_TIME', microtime(TRUE));
+}
+
+/**
+ * Define the memory usage at the start of the application, used for profiling.
+ */
+if ( ! defined('KOHANA_START_MEMORY'))
+{
+	define('KOHANA_START_MEMORY', memory_get_usage());
+}
+
+// Bootstrap the application
+require APPPATH.'bootstrap'.EXT;
+
+if (PHP_SAPI == 'cli') // Try and load minion
+{
+	class_exists('Minion_Task') OR die('Please enable the Minion module for CLI support.');
+	set_exception_handler(array('Minion_Exception', 'handler'));
+
+	Minion_Task::factory(Minion_CLI::options())->execute();
+}
+else
+{
+	/**
+	 * Execute the main request. A source of the URI can be passed, eg: $_SERVER['PATH_INFO'].
+	 * If no source is specified, the URI will be automatically detected.
+	 */
+	echo Request::factory(TRUE, array(), FALSE)
+		->execute()
+		->send_headers(TRUE)
+		->body();
+}
